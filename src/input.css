@@ -6,3 +6,9 @@
 .ant-picker-ok > button{
     @apply bg-secondary;
 }
+@media (max-width: 640px) {
+    .ant-picker-dropdown {
+        left: 50% !important;
+        transform: translateX(-50%);
+    }
+}

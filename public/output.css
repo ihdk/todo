@@ -2896,6 +2896,13 @@ html {
   background-color: hsl(var(--s) / var(--tw-bg-opacity));
 }
 
+@media (max-width: 640px) {
+  .ant-picker-dropdown {
+    left: 50% !important;
+    transform: translateX(-50%);
+  }
+}
+
 .last\:border-b-0:last-child {
   border-bottom-width: 0px;
 }
