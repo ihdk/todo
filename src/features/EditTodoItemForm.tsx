@@ -146,23 +146,20 @@ const DateInput: React.FC<{ control: Control<TodoItemType> }> = React.memo(
           <Controller
             control={control}
             name="date"
-            render={({ field: { onChange, value } }) => {
-              console.log(value);
-              return (
-                <DatePicker
-                  format="D MMMM YYYY HH:mm"
-                  showTime
-                  showSecond={false}
-                  value={value ? dayjs(value) : null}
-                  onChange={(date) => {
-                    onChange(
-                      date ? dayjs(date).format("D MMMM YYYY HH:mm") : null
-                    );
-                  }}
-                  bordered={false}
-                />
-              );
-            }}
+            render={({ field: { onChange, value } }) => (
+              <DatePicker
+                format="D MMMM YYYY HH:mm"
+                showTime
+                showSecond={false}
+                value={value ? dayjs(value) : null}
+                onChange={(date) => {
+                  onChange(
+                    date ? dayjs(date).format("D MMMM YYYY HH:mm") : null
+                  );
+                }}
+                bordered={false}
+              />
+            )}
           />
         </div>
       </>
