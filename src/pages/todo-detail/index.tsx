@@ -27,14 +27,11 @@ import StateFilter from "../../features/StateFilter";
 
 export type TodoContextType = {
   todo: TodoType;
-  filteredItems: TodoItemType[] | null;
   stateFilter: StateFilterType;
-  updateFilter: (filter: StateFilterType) => void;
-  getSearchPhrase: (phrase: string) => void;
-  searchPhrase: string;
-  toggleEditing: () => void;
   editedItem: TodoItemType | null;
+  toggleEditing: () => void;
   setEditedItem: React.Dispatch<React.SetStateAction<TodoItemType | null>>;
+  setStateFilter: React.Dispatch<React.SetStateAction<StateFilterType>>;
 };
 
 export const TodoContext = createContext<TodoContextType>(
@@ -46,7 +43,7 @@ const TodoDetail: React.FC = () => {
   const [editing, setEditing] = useState(false);
   const [editedItem, setEditedItem] = useState<TodoItemType | null>(null);
   const [stateFilter, setStateFilter] = useState<StateFilterType>("all");
-  const [searchPhrase, setSearchPhrase] = useState("");
+
   const { isSuccess, isLoading, isError, data: todo } = useGetTodo(id);
 
   useDocumentTitle(todo?.title);
@@ -57,19 +54,6 @@ const TodoDetail: React.FC = () => {
     if (editing) setEditedItem(null);
   }, [editing]);
 
-  const updateFilter = useCallback((filter: StateFilterType) => {
-    setStateFilter(filter);
-  }, []);
-
-  const getSearchPhrase = useCallback((phrase: string) => {
-    setSearchPhrase(phrase.trim());
-  }, []);
-
-  const filteredItems = useMemo(
-    () => getFilteredItems(todo, stateFilter, searchPhrase),
-    [todo, stateFilter, searchPhrase]
-  );
-
   return (
     <PageWrapper>
       {isLoading && <Loader />}
@@ -78,14 +62,11 @@ const TodoDetail: React.FC = () => {
         <TodoContext.Provider
           value={{
             todo,
-            filteredItems,
             stateFilter,
-            updateFilter,
-            getSearchPhrase,
+            setStateFilter,
             toggleEditing,
             setEditedItem,
             editedItem,
-            searchPhrase,
           }}
         >
           <Header>
@@ -109,14 +90,27 @@ const TodoDetail: React.FC = () => {
 };
 
 const TodoDetailContent: React.FC = React.memo(() => {
-  const { todo, filteredItems, searchPhrase } = useContext(TodoContext);
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const { todo, stateFilter } = useContext(TodoContext);
+
+  const filteredItems = useMemo(
+    () => getFilteredItems(todo, stateFilter, searchPhrase),
+    [todo, stateFilter, searchPhrase]
+  );
+
   const totalItemsCount = todo.items.length;
   const filteredItemsCount = filteredItems?.length;
 
   return totalItemsCount > 0 ? (
     <>
-      <TodoDetailToolbar />
-      <SeachTitle />
+      <div className="flex flex-col justify-between px-4 pb-4 border-b-2 gap-4 sm:flex-row sm:gap-0">
+        <SearchBar
+          searchPhrase={searchPhrase}
+          setSearchPhrase={setSearchPhrase}
+        />
+        <StateFilter />
+      </div>
+      <SeachTitle searchPhrase={searchPhrase} />
       {filteredItemsCount ? (
         filteredItems.map((item) => <Item key={item.id} item={item} />)
       ) : (
@@ -128,23 +122,15 @@ const TodoDetailContent: React.FC = React.memo(() => {
   );
 });
 
-const SeachTitle: React.FC = React.memo(() => {
-  const { searchPhrase } = useContext(TodoContext);
-  return searchPhrase ? (
-    <div className="p-4 text-primary text-xl">
-      Search results for:&nbsp;
-      <span className="font-bold">{searchPhrase}</span>
-    </div>
-  ) : null;
-});
-
-const TodoDetailToolbar: React.FC = React.memo(() => {
-  return (
-    <div className="flex flex-col justify-between px-4 pb-4 border-b-2 gap-4 sm:flex-row sm:gap-0">
-      <SearchBar />
-      <StateFilter />
-    </div>
-  );
-});
+const SeachTitle: React.FC<{ searchPhrase: string }> = React.memo(
+  ({ searchPhrase }) => {
+    return searchPhrase ? (
+      <div className="p-4 text-primary text-xl">
+        Search results for:&nbsp;
+        <span className="font-bold">{searchPhrase}</span>
+      </div>
+    ) : null;
+  }
+);
 
 export default React.memo(TodoDetail);

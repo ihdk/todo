@@ -1,18 +1,19 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { DeleteButton } from "./components";
-import { TodoContext } from "../pages/todo-detail";
 
-const SearchBar: React.FC = () => {
-  const { searchPhrase, getSearchPhrase } = useContext(TodoContext);
+const SearchBar: React.FC<{
+  searchPhrase: string;
+  setSearchPhrase: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ searchPhrase, setSearchPhrase }) => {
   const [text, setText] = useState(searchPhrase);
 
   const handleSubmit = () => {
-    getSearchPhrase(text);
+    setSearchPhrase(text.trim());
   };
 
   const handleCancel = useCallback(() => {
     setText("");
-    getSearchPhrase("");
+    setSearchPhrase("");
   }, []);
 
   return (

@@ -3,24 +3,24 @@ import { TodoContext } from "../pages/todo-detail";
 import { StatesFiltersObjectType } from "../app/types";
 
 const StateFilter: React.FC = () => {
-  const { stateFilter, updateFilter } = useContext(TodoContext);
+  const { stateFilter, setStateFilter } = useContext(TodoContext);
 
   const states: StatesFiltersObjectType = {
     all: {
       activeFilter: stateFilter === "all",
-      clickAction: () => updateFilter("all"),
+      clickAction: () => setStateFilter("all"),
     },
     active: {
       activeFilter: stateFilter === "active",
-      clickAction: () => updateFilter("active"),
+      clickAction: () => setStateFilter("active"),
     },
     finished: {
       activeFilter: stateFilter === "finished",
-      clickAction: () => updateFilter("finished"),
+      clickAction: () => setStateFilter("finished"),
     },
     missed: {
       activeFilter: stateFilter === "missed",
-      clickAction: () => updateFilter("missed"),
+      clickAction: () => setStateFilter("missed"),
     },
   };
 
