@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm, Controller, Control } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
@@ -8,50 +8,68 @@ import { DatePicker } from "antd";
 
 import { TodoContext, TodoContextType } from "../pages/todo-detail";
 import { updateTodoItem, useGetTodo } from "../app/api";
-import { NewItemFormValues } from "../app/types";
+import { TodoItemType } from "../app/types";
 
 const schema = Joi.object({
   title: Joi.string().trim().required(),
   description: Joi.string().allow(""),
   date: Joi.date().required(),
+  finished: Joi.boolean(),
 });
 
-const AddNewTodoItem: React.FC<{ toggleAdding: () => void }> = ({
-  toggleAdding,
-}) => {
-  const { todo } = useContext<TodoContextType>(TodoContext);
+const EditTodoItemForm: React.FC = () => {
+  const { todo, toggleEditing, editedItem } =
+    useContext<TodoContextType>(TodoContext);
+  const [submitting, setSubmitting] = useState(false);
   const { refetch } = useGetTodo(todo.id);
 
   const {
-    register,
     control,
+    register,
     handleSubmit,
     formState: { errors },
-  } = useForm<NewItemFormValues>({ resolver: joiResolver(schema) });
+  } = useForm<TodoItemType>({
+    defaultValues: {
+      title: editedItem?.title,
+      description: editedItem?.description,
+      date: editedItem?.date,
+    },
+    resolver: joiResolver(schema),
+  });
 
-  const onSubmit = (data: NewItemFormValues) => {
+  const onSubmit = (data: TodoItemType) => {
     const itemData = {
       ...data,
       date: dayjs(data.date).format(),
-      finished: false,
-      id: uuidv4(),
+      finished: editedItem === null ? false : editedItem.finished,
+      id: editedItem === null ? uuidv4() : editedItem.id,
     };
-
+    setSubmitting(true);
     updateTodoItem(
-      "add",
+      editedItem === null ? "add" : "update",
       {
         todo,
         itemData,
       },
       () => {
         refetch();
-        toggleAdding();
+        toggleEditing();
       }
     );
   };
 
   return (
     <div className="w-full px-5">
+      <h2 className="mt-0 mb-4 text-secondary">
+        {editedItem === null ? (
+          "New item"
+        ) : (
+          <>
+            Editing&nbsp;
+            <span className="text-secondary">{editedItem.title}</span>
+          </>
+        )}
+      </h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="w-full mb-5">
           <div className="input-wrapper mb-2">
@@ -99,48 +117,57 @@ const AddNewTodoItem: React.FC<{ toggleAdding: () => void }> = ({
         </div>
 
         <div className="w-full flex items-center justify-end">
-          <button className="btn btn-ghost mr-2" onClick={toggleAdding}>
+          <button className="btn btn-ghost mr-2" onClick={toggleEditing}>
             Cancel
           </button>
-          <input
+          <button
             type="submit"
-            value="Insert"
-            className="btn btn-outline btn-secondary"
-          />
+            className={`btn btn-outline btn-secondary ${
+              submitting ? "loading" : ""
+            }`}
+            disabled={submitting}
+          >
+            Submit
+          </button>
         </div>
       </form>
     </div>
   );
 };
 
-const DateInput: React.FC<{ control: Control<NewItemFormValues> }> = ({
-  control,
-}) => {
-  return (
-    <>
-      <div className="flex items-center">
-        <label className="label">
-          <span className="label-text">Deadline:</span>
-        </label>
+const DateInput: React.FC<{ control: Control<TodoItemType> }> = React.memo(
+  ({ control }) => {
+    return (
+      <>
+        <div className="flex items-center">
+          <label className="label">
+            <span className="label-text">Deadline:</span>
+          </label>
+          <Controller
+            control={control}
+            name="date"
+            render={({ field: { onChange, value } }) => {
+              console.log(value);
+              return (
+                <DatePicker
+                  format="D MMMM YYYY HH:mm"
+                  showTime
+                  showSecond={false}
+                  value={value ? dayjs(value) : null}
+                  onChange={(date) => {
+                    onChange(
+                      date ? dayjs(date).format("D MMMM YYYY HH:mm") : null
+                    );
+                  }}
+                  bordered={false}
+                />
+              );
+            }}
+          />
+        </div>
+      </>
+    );
+  }
+);
 
-        <Controller
-          control={control}
-          name="date"
-          render={({ field: { onChange, name, value } }) => (
-            <DatePicker
-              format="YYYY-MM-DD HH:mm"
-              showTime
-              showSecond={false}
-              onChange={(date) => {
-                onChange(dayjs(date).format("YYYY-MM-DD HH:mm"));
-              }}
-              bordered={false}
-            />
-          )}
-        />
-      </div>
-    </>
-  );
-};
-
-export default React.memo(AddNewTodoItem);
+export default React.memo(EditTodoItemForm);

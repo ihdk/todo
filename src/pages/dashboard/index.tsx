@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { createContext, useCallback, useState } from "react";
 import { useDocumentTitle } from "../../app/helpers";
-import AddNewTodo from "../../features/AddNewTodo";
+import EditTodoForm from "../../features/EditTodoForm";
 import TodosList from "./TodosList";
 import {
   AddNewButton,
@@ -9,14 +9,28 @@ import {
   PageWrapper,
   Title,
 } from "../../features/components";
+import { TodoType } from "../../app/types";
+
+export type DashboardContextType = {
+  toggleEditing: () => void;
+  editedTodo: TodoType | null;
+  setEditedTodo: React.Dispatch<React.SetStateAction<TodoType | null>>;
+};
+
+export const DashboardContext = createContext<DashboardContextType>(
+  {} as DashboardContextType
+);
 
 const Dashboard: React.FC = () => {
   useDocumentTitle();
-  const [addingNew, setAddingNew] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [editedTodo, setEditedTodo] = useState<TodoType | null>(null);
 
-  const toggleAdding = useCallback(() => {
-    setAddingNew(!addingNew);
-  }, [addingNew]);
+  const toggleEditing = useCallback(() => {
+    setEditing(!editing);
+    // disable currently edited data if disabling edit form
+    if (editing) setEditedTodo(null);
+  }, [editing]);
 
   return (
     <PageWrapper>
@@ -24,12 +38,16 @@ const Dashboard: React.FC = () => {
         <Title text="All todos" />
         <AddNewButton
           text="New Todo"
-          action={toggleAdding}
-          visible={!addingNew}
+          action={toggleEditing}
+          visible={!editing}
         />
       </Header>
       <ContentWrapper>
-        {addingNew ? <AddNewTodo toggleAdding={toggleAdding} /> : <TodosList />}
+        <DashboardContext.Provider
+          value={{ toggleEditing, editedTodo, setEditedTodo }}
+        >
+          {editing ? <EditTodoForm /> : <TodosList />}
+        </DashboardContext.Provider>
       </ContentWrapper>
     </PageWrapper>
   );

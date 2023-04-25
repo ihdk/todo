@@ -1,19 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { DeleteButton } from "./components";
 import { TodoContext } from "../pages/todo-detail";
 
 const SearchBar: React.FC = () => {
-  const [text, setText] = useState("");
-  const { getSearchPhrase } = useContext(TodoContext);
+  const { searchPhrase, getSearchPhrase } = useContext(TodoContext);
+  const [text, setText] = useState(searchPhrase);
 
   const handleSubmit = () => {
     getSearchPhrase(text);
   };
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setText("");
     getSearchPhrase("");
-  };
+  }, []);
 
   return (
     <div className="flex items-center justify-center gap-2 sm:justify-start">

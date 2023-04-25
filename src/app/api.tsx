@@ -1,10 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-import { TodoType, TodoItemType } from "./types";
+import { TodoType, TodoItemType, EditTodoFormValues } from "./types";
 import { notify } from "./helpers";
 
-const apiUrlBase = "https://631f480022cefb1edc48005f.mockapi.io/demo-api";
+const source =
+  !process.env.NODE_ENV || process.env.NODE_ENV === "development"
+    ? "dev"
+    : "test";
+const apiUrlBase = `https://631f480022cefb1edc48005f.mockapi.io/demo-api/${source}/`;
 
 /**
  * Get all todos for dashboard page
@@ -12,7 +16,7 @@ const apiUrlBase = "https://631f480022cefb1edc48005f.mockapi.io/demo-api";
 export const useGetTodos = () => {
   const getTodos = (): Promise<TodoType[]> =>
     axios
-      .get(`${apiUrlBase}/test`)
+      .get(apiUrlBase)
       .then((response) => response.data.reverse())
       .catch((error: unknown) => {
         handleError(error);
@@ -26,7 +30,7 @@ export const useGetTodos = () => {
 export const useGetTodo = (id: string | undefined) => {
   const getTodo = (): Promise<TodoType> =>
     axios
-      .get(`${apiUrlBase}/test/${id}`)
+      .get(`${apiUrlBase}/${id}`)
       .then((response) => response.data)
       .catch((error: unknown) => {
         handleError(error);
@@ -35,20 +39,26 @@ export const useGetTodo = (id: string | undefined) => {
 };
 
 /**
- * Add new todo list
+ * Add/edit todo list
  */
-export const addTodo = async (
-  title: string,
+export const editTodo = async (
+  data: { formData: EditTodoFormValues; editedTodo: TodoType | null },
   successCallback?: () => void,
   errorCallback?: () => void
 ) => {
-  const newTodo = {
-    title: title,
-  };
-  await axios
-    .post(`${apiUrlBase}/test`, newTodo)
+  const addingNew = data.editedTodo === null;
+
+  const todoData = addingNew
+    ? { title: data.formData.title }
+    : { ...data.editedTodo, title: data.formData.title };
+
+  await axios({
+    method: addingNew ? "post" : "put",
+    url: addingNew ? apiUrlBase : apiUrlBase + data.editedTodo?.id,
+    data: todoData,
+  })
     .then((response) => {
-      if (response.status === 201) {
+      if (response.status === 200 || response.status === 201) {
         if (successCallback !== undefined) successCallback();
       } else {
         if (errorCallback !== undefined) errorCallback();
@@ -69,7 +79,7 @@ export const deleteTodo = async (
   errorCallback?: () => void
 ) => {
   await axios
-    .delete(`${apiUrlBase}/test/${id}`)
+    .delete(apiUrlBase + id)
     .then((response) => {
       if (response.status === 200) {
         if (successCallback !== undefined) successCallback();
@@ -120,7 +130,7 @@ export const updateTodoItem = async (
   const newData = { ...todo, items: updatedItems };
 
   await axios
-    .put(`${apiUrlBase}/test/${todo.id}`, newData)
+    .put(apiUrlBase + todo.id, newData)
     .then((response) => {
       if (response.status === 200) {
         if (successCallback !== undefined) successCallback();

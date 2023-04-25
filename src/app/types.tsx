@@ -12,10 +12,10 @@ export interface TodoItemType {
   finished: boolean;
 }
 
-export type NewItemFormValues = Omit<TodoItemType, "id" | "finished">;
-
 export type StateFilterType = "all" | "active" | "finished" | "missed";
 export type StatesFiltersObjectType = Record<
   StateFilterType,
   { activeFilter: boolean; clickAction: () => void }
 >;
+
+export type EditTodoFormValues = Omit<TodoType, "id" | "items">;

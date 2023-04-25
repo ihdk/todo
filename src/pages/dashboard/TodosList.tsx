@@ -15,7 +15,7 @@ const TodosList: React.FC = () => {
         (todos.length > 0 ? (
           <ul className="menu menu-normal m-0 p-0 w-full">
             {todos.map((todo) => (
-              <Todo key={todo.id} data={todo} />
+              <Todo key={todo.id} todo={todo} />
             ))}
           </ul>
         ) : (

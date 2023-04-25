@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Location, useMatches } from "react-router-dom";
 import { format } from "date-fns";
+import dayjs from "dayjs";
 import { StateFilterType, TodoType } from "./types";
 import { ToastOptions, toast } from "react-toastify";
 
@@ -33,7 +34,7 @@ export const getRestorationKey = (
  * Get formatted date
  */
 export const getPrettyDate = (date: string) => {
-  return format(new Date(date), "do  LLLL yyyy HH:mm");
+  return dayjs(new Date(date)).format("D MMMM YYYY HH:mm");
 };
 
 /*
