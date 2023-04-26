@@ -28,7 +28,7 @@ const FinishedToggleButton: React.FC<{ item: TodoItemType }> = ({ item }) => {
 
   return (
     <button
-      className={`btn btn-square  btn-xs btn-primary ${
+      className={`btn-primary btn-square btn-xs btn ${
         !item.finished && "btn-outline"
       } ${loading && "loading"}`}
       onClick={handleChange}

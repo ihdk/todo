@@ -7,7 +7,7 @@ const ItemContentWrapper: React.FC<React.PropsWithChildren> = ({
   const { item } = useContext<ItemContextType>(ItemContext);
   return (
     <div
-      className={`p-4 transition border-b-2 last:border-b-0 ${
+      className={`border-b-2 p-4 transition last:border-b-0 ${
         item.finished ? "bg-success/10" : ""
       }`}
     >

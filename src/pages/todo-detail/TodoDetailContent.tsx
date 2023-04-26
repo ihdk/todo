@@ -23,7 +23,7 @@ const TodoDetailContent: React.FC = () => {
 
   return totalItemsCount > 0 ? (
     <>
-      <div className="flex flex-col justify-between px-4 pb-4 border-b-2 gap-4 sm:flex-row sm:gap-0">
+      <div className="flex flex-col justify-between gap-4 border-b-2 px-4 pb-4 sm:flex-row sm:gap-0">
         <SearchBar
           searchPhrase={searchPhrase}
           setSearchPhrase={setSearchPhrase}

@@ -60,7 +60,7 @@ const EditTodoItemForm: React.FC = () => {
 
   return (
     <div className="w-full px-5">
-      <h2 className="mt-0 mb-4 text-secondary">
+      <h2 className="mb-4 mt-0 text-secondary">
         {editedItem === null ? (
           "New item"
         ) : (
@@ -71,14 +71,14 @@ const EditTodoItemForm: React.FC = () => {
         )}
       </h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-full mb-5">
+        <div className="mb-5 w-full">
           <div className="input-wrapper mb-2">
             <label className="label">
               <span className="label-text">Item title:</span>
             </label>
             <input
               type="text"
-              className="input input-bordered input-secondary w-full"
+              className="input-bordered input-secondary input w-full"
               onKeyDown={(e) => {
                 // prevent form submission on enter
                 if (e.key === "Enter") e.preventDefault();
@@ -86,7 +86,7 @@ const EditTodoItemForm: React.FC = () => {
               {...register("title")}
             />
             {errors.title && (
-              <div className="text-xs text-error pl-2 mt-1" role="alert">
+              <div className="mt-1 pl-2 text-xs text-error" role="alert">
                 {errors.title.message}
               </div>
             )}
@@ -97,11 +97,11 @@ const EditTodoItemForm: React.FC = () => {
               <span className="label-text">Item description:</span>
             </label>
             <textarea
-              className="textarea textarea-secondary w-full block"
+              className="textarea-secondary textarea block w-full"
               {...register("description", { required: false })}
             ></textarea>
             {errors.description && (
-              <div className="text-xs text-error pl-2 mt-1" role="alert">
+              <div className="mt-1 pl-2 text-xs text-error" role="alert">
                 {errors.description.message}
               </div>
             )}
@@ -110,19 +110,19 @@ const EditTodoItemForm: React.FC = () => {
         <div className="input-wrapper mb-2">
           <DateInput control={control} />
           {errors.date && (
-            <div className="text-xs text-error pl-2 mt-1" role="alert">
+            <div className="mt-1 pl-2 text-xs text-error" role="alert">
               {errors.date.message}
             </div>
           )}
         </div>
 
-        <div className="w-full flex items-center justify-end">
-          <button className="btn btn-ghost mr-2" onClick={toggleEditing}>
+        <div className="flex w-full items-center justify-end">
+          <button className="btn-ghost btn mr-2" onClick={toggleEditing}>
             Cancel
           </button>
           <button
             type="submit"
-            className={`btn btn-outline btn-secondary ${
+            className={`btn-outline btn-secondary btn ${
               submitting ? "loading" : ""
             }`}
             disabled={submitting}
