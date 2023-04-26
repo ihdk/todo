@@ -163,6 +163,17 @@ export const Loader: React.FC<{ small?: boolean }> = ({ small }) => {
   );
 };
 
+export const SeachTitle: React.FC<{ searchPhrase: string }> = React.memo(
+  ({ searchPhrase }) => {
+    return searchPhrase ? (
+      <div className="p-4 text-primary text-xl">
+        Search results for:&nbsp;
+        <span className="font-bold">{searchPhrase}</span>
+      </div>
+    ) : null;
+  }
+);
+
 export const DeadlineLabel: React.FC<{ text: string; afterDeadline: boolean }> =
   React.memo(({ text, afterDeadline }) => (
     <div

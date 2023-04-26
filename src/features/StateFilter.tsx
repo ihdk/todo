@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
-import { TodoContext } from "../pages/todo-detail";
-import { StatesFiltersObjectType } from "../app/types";
+import React from "react";
+import { StateFilterType, StatesFiltersObjectType } from "../app/types";
 
-const StateFilter: React.FC = () => {
-  const { stateFilter, setStateFilter } = useContext(TodoContext);
-
+const StateFilter: React.FC<{
+  stateFilter: StateFilterType;
+  setStateFilter: React.Dispatch<React.SetStateAction<StateFilterType>>;
+}> = ({ stateFilter, setStateFilter }) => {
   const states: StatesFiltersObjectType = {
     all: {
       activeFilter: stateFilter === "all",
