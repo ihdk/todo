@@ -27,7 +27,7 @@ const ItemContent: React.FC = () => {
   return (
     <div className="flex items-start justify-between">
       <div>
-        <h2 className="text-base font-bold m-0">{item.title}</h2>
+        <h2 className="m-0 text-base font-bold">{item.title}</h2>
         <p className="m-0 whitespace-pre-line">{item.description}</p>
       </div>
       <div className="flex items-center gap-3">

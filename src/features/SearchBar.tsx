@@ -32,12 +32,12 @@ const SearchBar: React.FC<{
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSubmit();
           }}
-          className="input input-sm input-bordered input-primary "
+          className="input-bordered input-primary input input-sm"
         />
       </div>
       <button
         onClick={handleSubmit}
-        className="btn btn-sm btn-outline btn-primary"
+        className="btn-outline btn-primary btn-sm btn"
       >
         Search
       </button>

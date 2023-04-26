@@ -32,7 +32,7 @@ const StateFilter: React.FC<{
           return (
             <button
               key={key}
-              className={`btn btn-outline btn-primary btn-sm ${
+              className={`btn-outline btn-primary btn-sm btn ${
                 data.activeFilter && "btn-active"
               }`}
               onClick={data.clickAction}

@@ -14,9 +14,9 @@ const ItemFooter: React.FC = () => {
   const prettyDate = useMemo(() => getPrettyDate(item.date), [item.date]);
 
   return (
-    <div className="mt-2 flex justify-start items-center gap-2">
+    <div className="mt-2 flex items-center justify-start gap-2">
       <FinishedToggleButton item={item} />
-      <div className={`text-sm ${isAfterDeadline && "text-error font-bold"}`}>
+      <div className={`text-sm ${isAfterDeadline && "font-bold text-error"}`}>
         <DeadlineLabel text={prettyDate} afterDeadline={isAfterDeadline} />
       </div>
     </div>

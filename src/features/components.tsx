@@ -8,7 +8,7 @@ export const PageWrapper: React.FC<React.PropsWithChildren> = ({
 }) => {
   return (
     <div className="relative flex min-h-screen flex-col justify-start overflow-hidden bg-base-100 py-6 sm:py-12 ">
-      <div className="px-2 py-10 w-full max-w-4xl sm:mx-auto prose">
+      <div className="prose w-full max-w-4xl px-2 py-10 sm:mx-auto">
         {children}
         <ToastContainer autoClose={3000} theme="colored" />
       </div>
@@ -20,7 +20,7 @@ export const ContentWrapper: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
   return (
-    <div className="py-5 mt-5 shadow-xl ring-1 ring-gray-900/5 bg-white sm:rounded-lg">
+    <div className="mt-5 bg-white py-5 shadow-xl ring-1 ring-gray-900/5 sm:rounded-lg">
       {children}
     </div>
   );
@@ -28,7 +28,7 @@ export const ContentWrapper: React.FC<React.PropsWithChildren> = ({
 
 export const Header: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <div className="w-full flex flex-col items-center justify-between gap-4 sm:flex-row sm:gap-0">
+    <div className="flex w-full flex-col items-center justify-between gap-4 sm:flex-row sm:gap-0">
       {children}
     </div>
   );
@@ -53,7 +53,7 @@ export const EditButton: React.FC<{ action: () => void }> = React.memo(
   ({ action }) => {
     return (
       <button
-        className="btn btn-xs btn-square btn-outline btn-primary"
+        className="btn-outline btn-primary btn-square btn-xs btn"
         onClick={(e) => {
           e.preventDefault();
           action();
@@ -84,7 +84,7 @@ export const DeleteButton: React.FC<{
 }> = React.memo(({ action, loading = false }) => {
   return (
     <button
-      className={`btn btn-xs btn-square btn-outline btn-error ${
+      className={`btn-outline btn-error btn-square btn-xs btn ${
         loading ? "loading" : ""
       }`}
       onClick={(e) => {
@@ -118,14 +118,14 @@ export const AddNewButton: React.FC<{
   visible?: boolean;
 }> = React.memo(({ text, action, visible }) => {
   return visible ? (
-    <button className="btn btn-sm btn-outline btn-secondary" onClick={action}>
+    <button className="btn-outline btn-secondary btn-sm btn" onClick={action}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-4 h-4 mr-1"
+        className="mr-1 h-4 w-4"
       >
         <path
           strokeLinecap="round"
@@ -144,8 +144,8 @@ export const Loader: React.FC<{ small?: boolean }> = ({ small }) => {
       <svg
         aria-hidden="true"
         className={`${
-          small ? "w-4 h-4" : "w-8 h-8"
-        } text-primary/40 animate-spin fill-primary`}
+          small ? "h-4 w-4" : "h-8 w-8"
+        } animate-spin fill-primary text-primary/40`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +166,7 @@ export const Loader: React.FC<{ small?: boolean }> = ({ small }) => {
 export const SeachTitle: React.FC<{ searchPhrase: string }> = React.memo(
   ({ searchPhrase }) => {
     return searchPhrase ? (
-      <div className="p-4 text-primary text-xl">
+      <div className="p-4 text-xl text-primary">
         Search results for:&nbsp;
         <span className="font-bold">{searchPhrase}</span>
       </div>
@@ -177,7 +177,7 @@ export const SeachTitle: React.FC<{ searchPhrase: string }> = React.memo(
 export const DeadlineLabel: React.FC<{ text: string; afterDeadline: boolean }> =
   React.memo(({ text, afterDeadline }) => (
     <div
-      className={`badge badge-sm gap-1 h-6 ${
+      className={`badge badge-sm h-6 gap-1 ${
         afterDeadline ? "badge-error" : "badge-primary"
       }`}
     >
@@ -187,15 +187,15 @@ export const DeadlineLabel: React.FC<{ text: string; afterDeadline: boolean }> =
 
 export const NothingToShow: React.FC<{ text?: string }> = ({ text }) => {
   return (
-    <p className="text-center text-error my-1">
+    <p className="my-1 text-center text-error">
       {text ? text : "Nothing to show."}
     </p>
   );
 };
 
 export const HomeIconLink: React.FC = () => (
-  <Link to="/" className="text-inherit flex">
-    <button className="btn btn-sm btn-square btn-outline btn-secondary">
+  <Link to="/" className="flex text-inherit">
+    <button className="btn-outline btn-secondary btn-square btn-sm btn">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-5 w-5"

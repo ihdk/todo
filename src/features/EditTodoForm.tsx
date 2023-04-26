@@ -32,11 +32,11 @@ const EditTodoForm: React.FC = () => {
   return (
     <div className="w-full px-5">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-full mb-5">
+        <div className="mb-5 w-full">
           <input
             type="text"
             placeholder="Todo name"
-            className="input input-bordered input-secondary w-full"
+            className="input-bordered input-secondary input w-full"
             onKeyDown={(e) => {
               // prevent form submission on enter
               if (e.key === "Enter") e.preventDefault();
@@ -52,13 +52,13 @@ const EditTodoForm: React.FC = () => {
           )}
         </div>
 
-        <div className="w-full flex items-center justify-end">
-          <button className="btn btn-ghost mr-2" onClick={toggleEditing}>
+        <div className="flex w-full items-center justify-end">
+          <button className="btn-ghost btn mr-2" onClick={toggleEditing}>
             Cancel
           </button>
           <button
             type="submit"
-            className={`btn btn-outline btn-secondary ${
+            className={`btn-outline btn-secondary btn ${
               submitting ? "loading" : ""
             }`}
             disabled={submitting}

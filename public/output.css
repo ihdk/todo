@@ -2776,11 +2776,6 @@ html {
   border-bottom-width: 2px;
 }
 
-.border-b-black {
-  --tw-border-opacity: 1;
-  border-bottom-color: rgb(0 0 0 / var(--tw-border-opacity));
-}
-
 .bg-base-100 {
   --tw-bg-opacity: 1;
   background-color: hsl(var(--b1) / var(--tw-bg-opacity));
@@ -2859,30 +2854,18 @@ html {
   line-height: 1.25rem;
 }
 
-.text-xs {
-  font-size: 0.75rem;
-  line-height: 1rem;
-}
-
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
 
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
 .font-bold {
   font-weight: 700;
-}
-
-.font-thin {
-  font-weight: 100;
-}
-
-.font-extrabold {
-  font-weight: 800;
-}
-
-.font-semibold {
-  font-weight: 600;
 }
 
 .text-error {
@@ -2910,14 +2893,6 @@ html {
 .text-secondary {
   --tw-text-opacity: 1;
   color: hsl(var(--s) / var(--tw-text-opacity));
-}
-
-.text-secondary\/40 {
-  color: hsl(var(--s) / 0.4);
-}
-
-.text-secondary\/80 {
-  color: hsl(var(--s) / 0.8);
 }
 
 .shadow-xl {
