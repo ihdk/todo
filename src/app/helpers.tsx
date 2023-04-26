@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { Location, useMatches } from "react-router-dom";
-import { format } from "date-fns";
 import dayjs from "dayjs";
 import { StateFilterType, TodoType } from "./types";
 import { ToastOptions, toast } from "react-toastify";
@@ -41,8 +40,8 @@ export const getPrettyDate = (date: string) => {
  * Check if given date is from past
  */
 export const dateIsAfterDeadline = (date: string) => {
-  const nowTimestamp = format(new Date(), "T"); // ms timestamp
-  const dateTimestamp = format(new Date(date), "T"); // ms timestamp
+  const nowTimestamp = new Date().getTime(); // ms timestamp
+  const dateTimestamp = new Date(date).getTime(); // ms timestamp
   return dateTimestamp < nowTimestamp;
 };
 
